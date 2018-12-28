@@ -116,8 +116,9 @@ function safeThen(self, onFulfilled, onRejected) {
  * @param {*} deferred 注册到then上的回调函数
  */
 function handle(self, deferred) {
-  //内部状态为3，表示调用then返回新的promise实例
-  //因此下面的操作，用于调用到最后一个then函数
+  // 内部状态为3，表示调用then返回新的promise实例
+  // 而self._value得到当前promise实例链接的后一个promise实例
+  // 迭代进行，直到调用链最后一个promise 实例
   while (self._state === 3) {
     self = self._value;
   }
@@ -201,6 +202,9 @@ function resolve(self, newValue) {
     // 调用then返回新的promise时，则将当前promise实例状态修改为3
     if (then === self.then && newValue instanceof Promise) {
       self._state = 3;
+
+      // todo:这一句代码非常关键，即构成promise链条的核心
+      // 通过当前promise实例可以不断通过调用_value属性得到后续所有promise实例对象
       self._value = newValue;
       finale(self);
       return;
