@@ -135,6 +135,8 @@ function handle(self, deferred) {
     }
     if (self._deferredState === 1) {
       self._deferredState = 2;
+
+      // 关键的一句代码，用于将promise链式调用中所有注册到then上的回调函数保存在内部_deferreds数组
       self._deferreds = [self._deferreds, deferred];
       return;
     }
@@ -257,6 +259,7 @@ function finale(self) {
 function Handler(onFulfilled, onRejected, promise) {
   this.onFulfilled = typeof onFulfilled === "function" ? onFulfilled : null;
   this.onRejected = typeof onRejected === "function" ? onRejected : null;
+
   this.promise = promise;
 }
 
