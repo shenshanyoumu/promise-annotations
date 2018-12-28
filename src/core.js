@@ -258,7 +258,7 @@ function finale(self) {
  *
  * @param {*} onFulfilled 当前promise实例状态resolved时的回调
  * @param {*} onRejected 当前promise实例状态rejected时的回调
- * @param {*} promise 特定的promise对象
+ * @param {*} promise 特定的promise对象，一般是then中新建的promise对象
  */
 function Handler(onFulfilled, onRejected, promise) {
   this.onFulfilled = typeof onFulfilled === "function" ? onFulfilled : null;
